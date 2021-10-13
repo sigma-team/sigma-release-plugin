@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.amobee.sigma.SigmaReleasePluginTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2021-10-13T07:27:18" hostname="COMPUTER" time="7.988">
-  <properties/>
-  <testcase name="testApply()" classname="com.amobee.sigma.SigmaReleasePluginTest" time="7.988"/>
-  <system-out><![CDATA[Hello World!
-]]></system-out>
-  <system-err><![CDATA[]]></system-err>
-</testsuite>
