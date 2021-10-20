@@ -63,7 +63,7 @@ fabric.properties
 
 *.class
 browscap.csv
-gradle/wrapper
+gradle/wrapper/gradle-wrapper.jar
 gradlew.bat
 gradlew
 
