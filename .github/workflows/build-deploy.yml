@@ -8,7 +8,6 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      gradle_version: 7.1 # set to empty to build with most recent version of gradle
       gradle_commands: build # default is build
     steps:
       - uses: actions/checkout@v2
@@ -17,12 +16,8 @@ jobs:
         with:
           java-version: '8'
           distribution: 'adopt'
-      - name: Wrap with specified version
-        run: gradle wrapper --gradle-version=${{ env.gradle_version }}
-        if: ${{ env.gradle_version != '' }}
       - name: Wrap without version
         run: gradle wrapper
-        if: ${{ env.gradle_version == '' }}
       - name: Build with Gradle
         run: ./gradlew ${{ env.gradle_commands }}
 
