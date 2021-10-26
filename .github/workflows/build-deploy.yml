@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       gradle_version: 7.1 # set to empty to build with most recent version of gradle
-      gradle_commands: build # default is build
+      gradle_commands: shadowJar # default is build
     steps:
       - uses: actions/checkout@v2
       - name: Set up JDK 8
