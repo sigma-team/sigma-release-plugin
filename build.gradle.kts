@@ -22,6 +22,7 @@ gradlePlugin {
 }
 
 dependencies {
+    implementation("commons-configuration:commons-configuration:1.10")
     implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
     implementation ("org.eclipse.jgit:org.eclipse.jgit:5.13.0.202109080827-r")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
