@@ -33,8 +33,8 @@ fun createTag(git: Git,
         .setMessage(message)
         .call()
 
-fun pushTag(git: Git,
-            name: String
+fun push(git: Git,
+         name: String
 ) = git.push()
         .add(name)
         .call()
