@@ -4,11 +4,7 @@ import java.io.File
 
 const val DEFAULT_BOOTSTRAP_FILE = "src/main/resources/bootstrap.yml"
 
-fun addSpringCloudConfigLabel(value: String) {
-    addSpringCloudConfigLabel(DEFAULT_BOOTSTRAP_FILE, value)
-}
-
-fun addSpringCloudConfigLabel(bootstrapFile: String, value: String) {
+fun addSpringCloudConfigLabel(bootstrapFile: String = DEFAULT_BOOTSTRAP_FILE, value: String) {
     add(bootstrapFile, "spring.cloud.config.label", value)
 }
 
