@@ -37,4 +37,4 @@ jobs:
             url: 'https://sigmadevelopmentteam.jfrog.io/artifactory/default-gradle-dev/'
             credentials type: 'apikey'
             apikey: ${{ secrets.RT_APIKEY }}
-            args: u "build/libs/*" "/sigma/" --recursive=true 
+            args: u "build/libs/sigma-team.sigma-release-plugin.jar" "/sigma-team/sigma-release-plugin/0.0.${{github.run_number}}/sigma-release-plugin-0.0.${{github.run_number}}.jar" 
