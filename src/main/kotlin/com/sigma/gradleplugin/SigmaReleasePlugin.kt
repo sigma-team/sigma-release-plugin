@@ -14,7 +14,6 @@ class SigmaReleasePlugin : Plugin<Project> {
         val extension = createReleaseExtension(rootProject)
         val preBuildReleaseTask = createPreBuildReleaseTask(rootProject, extension)
         val postBuildReleaseTask = createPostBuildReleaseTask(rootProject, extension)
-        print("====tasks" + rootProject.tasks.asMap)
         rootProject.pluginManager.withPlugin("java-base") {
             val buildTask = rootProject.tasks.getByName("build")
             buildTask.dependsOn(preBuildReleaseTask)
