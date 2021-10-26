@@ -23,3 +23,18 @@ fun add(git: Git,
         git.add().apply {
             filePatterns.forEach { this.addFilepattern(it) }
         }.call()
+
+fun createTag(git: Git,
+              name: String,
+              message: String
+) = git.tag()
+        .setName(name)
+        .setAnnotated(true)
+        .setMessage(message)
+        .call()
+
+fun pushTag(git: Git,
+            name: String
+) = git.push()
+        .add(name)
+        .call()
