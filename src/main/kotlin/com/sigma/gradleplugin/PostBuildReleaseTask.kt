@@ -1,5 +1,6 @@
 package com.sigma.gradleplugin
 
+import com.sigma.domain.postBuild
 import org.gradle.api.DefaultTask
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.tasks.Input
@@ -11,10 +12,19 @@ open class PostBuildReleaseTask @Inject constructor(
 ) : DefaultTask() {
 
     @get:Input
-    val ticketNumber = objectFactory.property(String::class.java)
+    val projectRepoPath = objectFactory.property(String::class.java)
 
     @get:Input
-    val version = objectFactory.property(String::class.java)
+    val cloudConfigRepoPath = objectFactory.property(String::class.java)
+
+    @get:Input
+    val applicationMainBranch = objectFactory.property(String::class.java)
+
+    @get:Input
+    val cloudConfigMainBranch = objectFactory.property(String::class.java)
+
+    @get:Input
+    val tagName = objectFactory.property(String::class.java)
 
     @get:Input
     val preReleaseCommitMessage = objectFactory.property(String::class.java)
@@ -25,6 +35,15 @@ open class PostBuildReleaseTask @Inject constructor(
     @TaskAction
     fun invoke() {
         logger.quiet("run sigma release plugin `postBuild` step")
-    }
 
+        postBuild(
+            projectRepoPath = projectRepoPath.get(),
+            cloudConfigRepoPath = cloudConfigRepoPath.get(),
+            applicationMainBranch = applicationMainBranch.get(),
+            cloudConfigMainBranch = cloudConfigMainBranch.get(),
+            tagName = tagName.get(),
+            preReleaseCommitMessage = preReleaseCommitMessage.get(),
+            newVersionCommitMessage = newVersionCommitMessage.get()
+        )
+    }
 }

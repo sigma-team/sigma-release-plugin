@@ -5,6 +5,12 @@ import org.gradle.api.model.ObjectFactory
 
 abstract class ReleasePluginExtension(objectFactory: ObjectFactory, rootProject: Project) {
 
+    val projectRepoPath = objectFactory.property(String::class.java)
+        .convention("${rootProject.path}")
+
+    val cloudConfigRepoPath = objectFactory.property(String::class.java)
+        .convention("${rootProject.path}/../config/")
+
     val deploymentTicket = objectFactory.property(String::class.java)
 
     val bootstrapFilePath = objectFactory.property(String::class.java)
@@ -17,6 +23,9 @@ abstract class ReleasePluginExtension(objectFactory: ObjectFactory, rootProject:
         .convention("release-${rootProject.version}")
 
     val applicationMainBranch = objectFactory.property(String::class.java)
+        .convention("master")
+
+    val cloudConfigMainBranch = objectFactory.property(String::class.java)
         .convention("master")
 
     val preReleaseCommitMessage = objectFactory.property(String::class.java)

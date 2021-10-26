@@ -31,10 +31,11 @@ class SigmaReleasePlugin : Plugin<Project> {
         group = tasksGroup
         description = "TODO"
 
-        ticketNumber.set(extension.deploymentTicket)
-        version.set(rootProject.version.toString())
+        projectRepoPath.set(extension.projectRepoPath)
+        releaseBranchName.set(extension.releaseBranchName)
+        bootstrapFilePath.set(extension.bootstrapFilePath)
+        tagName.set(extension.tagName)
         preReleaseCommitMessage.set(extension.preReleaseCommitMessage)
-        newVersionCommitMessage.set(extension.newVersionCommitMessage)
     }
 
     private fun createPostBuildReleaseTask(
@@ -44,8 +45,11 @@ class SigmaReleasePlugin : Plugin<Project> {
         group = tasksGroup
         description = "TODO"
 
-        ticketNumber.set(extension.deploymentTicket)
-        version.set(rootProject.version.toString())
+        projectRepoPath.set(extension.projectRepoPath)
+        cloudConfigRepoPath.set(extension.cloudConfigRepoPath)
+        applicationMainBranch.set(extension.applicationMainBranch)
+        cloudConfigMainBranch.set(extension.cloudConfigMainBranch)
+        tagName.set(extension.tagName)
         preReleaseCommitMessage.set(extension.preReleaseCommitMessage)
         newVersionCommitMessage.set(extension.newVersionCommitMessage)
     }

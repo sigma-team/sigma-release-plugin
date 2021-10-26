@@ -1,36 +1,51 @@
 package com.sigma.domain
 
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.storage.file.FileRepositoryBuilder
+import java.io.File
 
-const val MASTER = "master"
+fun preBuild(projectRepoPath: String, releaseBranchName: String, bootstrapFile: String, tagName: String, preReleaseCommitMessage: String) {
+    val git = createGit(projectRepoPath)
 
-fun preBuild(git: Git, releaseBranch: String, preReleaseCommitMessage: String, bootstrapFile: String) {
-    addSpringCloudConfigLabel(bootstrapFile = bootstrapFile, releaseBranch)
-    checkout(git, releaseBranch, createNewBranch = true)
+    addSpringCloudConfigLabel(bootstrapFile = bootstrapFile, tagName)
+    checkout(git, releaseBranchName, createNewBranch = true)
     commit(git, preReleaseCommitMessage)
-    push(git, releaseBranch)
+    push(git, releaseBranchName)
 }
 
-fun postBuild(projectGit: Git,
-              cloudConfigGit: Git,
+fun postBuild(projectRepoPath: String,
+              cloudConfigRepoPath: String,
+              applicationMainBranch: String,
+              cloudConfigMainBranch: String,
               tagName: String,
               preReleaseCommitMessage: String,
               newVersionCommitMessage: String) {
-    createTagInCloudConfigRepo(cloudConfigGit, tagName, preReleaseCommitMessage)
-    updateProjectVersion(projectGit, newVersionCommitMessage)
+    val projectGit = createGit(projectRepoPath)
+    val cloudConfigGit = createGit(cloudConfigRepoPath)
+
+    createTagInCloudConfigRepo(cloudConfigGit, cloudConfigMainBranch, tagName, preReleaseCommitMessage)
+    updateProjectVersion(projectGit, applicationMainBranch, newVersionCommitMessage)
 }
 
-fun createTagInCloudConfigRepo(git: Git, tagName: String, preReleaseCommitMessage: String) {
-    checkout(git, MASTER)
+private fun createGit(repoPath: String) = Git(
+    FileRepositoryBuilder()
+        .setGitDir(File(repoPath))
+        .readEnvironment() // scan environment GIT_* variables
+        .findGitDir() // scan up the file system tree
+        .build()
+)
+
+private fun createTagInCloudConfigRepo(git: Git, cloudConfigMainBranch:String, tagName: String, preReleaseCommitMessage: String) {
+    checkout(git, cloudConfigMainBranch)
     createTag(git, tagName, preReleaseCommitMessage)
     push(git, tagName)
 }
 
-fun updateProjectVersion(git: Git, newVersionCommitMessage: String) {
-    checkout(git, MASTER)
+private fun updateProjectVersion(git: Git, applicationMainBranch: String, newVersionCommitMessage: String) {
+    checkout(git, applicationMainBranch)
     incrementAppVersion()
     add(git, GRADLE_PROPERTIES_FILE)
     commit(git, newVersionCommitMessage)
-    push(git, MASTER)
+    push(git, applicationMainBranch)
 }
 
