@@ -1,13 +1,20 @@
 package com.sigma.domain
 
+import org.eclipse.jgit.api.Git
+
 class ReleaseManager(
-    val ticketNumber: String,
-    val version: String,
+    var git: Git,
+    val tagName: String,
+    val releaseBranch: String,
     val preReleaseCommitMessage: String,
-    val newVersionCommitMessage: String
+    val newVersionCommitMessage: String,
+    val bootstrapFile: String
 ) {
     fun preBuild() {
-        //TODO
+        addSpringCloudConfigLabel(bootstrapFile = bootstrapFile, releaseBranch)
+        checkout(git, releaseBranch, createNewBranch = true)
+        commit(git, preReleaseCommitMessage)
+        push(git, releaseBranch)
     }
 
     fun postBuild() {
