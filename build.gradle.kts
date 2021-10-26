@@ -12,10 +12,10 @@ repositories {
 
 gradlePlugin {
     plugins {
-        register("codegen-plugin") {
+        register("sigmaReleasePlugin") {
             description = "TODO"
             displayName = "Sigma release plugin"
-            id = "sigma-release-plugin"
+            id = "com.sigma.release"
             implementationClass = "com.sigma.gradleplugin.SigmaReleasePlugin"
         }
     }

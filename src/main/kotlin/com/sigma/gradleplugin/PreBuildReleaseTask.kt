@@ -6,7 +6,7 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.TaskAction
 import javax.inject.Inject
 
-open class ReleaseTask @Inject constructor(
+open class PreBuildReleaseTask @Inject constructor(
     objectFactory: ObjectFactory
 ) : DefaultTask() {
 
@@ -24,7 +24,6 @@ open class ReleaseTask @Inject constructor(
 
     @TaskAction
     fun invoke() {
-        //TODO
+        logger.quiet("run sigma release plugin `preBuild` step")
     }
-
 }
