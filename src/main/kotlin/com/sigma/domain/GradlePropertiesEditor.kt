@@ -3,7 +3,18 @@ package com.sigma.domain
 import com.sigma.domain.IncrementStrategy.MINOR
 import org.apache.commons.configuration.PropertiesConfiguration
 
-fun updatePropertyFile(filePath: String,
+const val GRADLE_PROPERTIES_FILE = "gradle.properties"
+
+fun incrementGradleVersion(
+        propertiesFile: String = GRADLE_PROPERTIES_FILE,
+        incrementStrategy: IncrementStrategy = MINOR
+) {
+    val version = getPropertyValue(propertiesFile, "version")
+    val incrementedVersion = incrementStrategy.increment(version)
+    updatePropertyFile(propertiesFile, "version", incrementedVersion)
+}
+
+private fun updatePropertyFile(filePath: String,
                        propertyKey: String,
                        propertyValue: String
 ) = with(PropertiesConfiguration(filePath)) {
@@ -11,16 +22,11 @@ fun updatePropertyFile(filePath: String,
     save()
 }
 
-fun getPropertyValue(filePath: String,
+private fun getPropertyValue(filePath: String,
                      propertyKey: String
 ) = PropertiesConfiguration(filePath).getString(propertyKey)!!
 
-fun incrementVersion(
-        version: String,
-        incrementStrategy: IncrementStrategy = MINOR
-) = incrementStrategy.increment(version)
-
-enum class IncrementStrategy(val versionIndex: Int) {
+enum class IncrementStrategy(private val versionIndex: Int) {
     MAJOR(0),
     MINOR(1),
     PATCH(2);
