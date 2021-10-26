@@ -31,8 +31,8 @@ class SigmaReleasePlugin : Plugin<Project> {
         group = tasksGroup
         description = "TODO"
 
-        ticketNumber.set(extension.ticketNumber)
-        version.set(extension.version)
+        ticketNumber.set(extension.deploymentTicket)
+        version.set(rootProject.version.toString())
         preReleaseCommitMessage.set(extension.preReleaseCommitMessage)
         newVersionCommitMessage.set(extension.newVersionCommitMessage)
     }
@@ -44,8 +44,8 @@ class SigmaReleasePlugin : Plugin<Project> {
         group = tasksGroup
         description = "TODO"
 
-        ticketNumber.set(extension.ticketNumber)
-        version.set(extension.version)
+        ticketNumber.set(extension.deploymentTicket)
+        version.set(rootProject.version.toString())
         preReleaseCommitMessage.set(extension.preReleaseCommitMessage)
         newVersionCommitMessage.set(extension.newVersionCommitMessage)
     }
