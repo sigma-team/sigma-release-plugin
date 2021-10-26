@@ -32,6 +32,10 @@ dependencies {
 tasks {
     jar {
         archiveBaseName.set("sigma-team.sigma-release-plugin")
+
+        from({
+            configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it) }
+        })
     }
 
     test {
