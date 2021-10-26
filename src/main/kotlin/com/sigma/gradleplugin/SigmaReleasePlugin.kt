@@ -22,7 +22,7 @@ class SigmaReleasePlugin : Plugin<Project> {
     }
 
     private fun createReleaseExtension(rootProject: Project) =
-        rootProject.extensions.create<ReleasePluginExtension>("sigmaReleasePlugin", rootProject.objects)
+        rootProject.extensions.create<ReleasePluginExtension>("sigmaReleasePlugin", rootProject)
 
     private fun createPreBuildReleaseTask(
         rootProject: Project,
