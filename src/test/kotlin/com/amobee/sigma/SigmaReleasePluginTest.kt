@@ -1,11 +1,11 @@
 package com.amobee.sigma
 
-import org.gradle.internal.impldep.org.junit.Ignore
 import org.gradle.testfixtures.ProjectBuilder
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.BeforeEach
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Files
@@ -53,7 +53,7 @@ class SigmaReleasePluginTest {
         Assertions.assertNotNull(project.tasks.getByName("postBuildRelease"))
     }
 
-    @Ignore
+    @Disabled
     @Test
     fun `When the build task is run then the 'preBuild' and 'postBuild' tasks must be run`() {
         val result = GradleRunner.create()
