@@ -1,5 +1,6 @@
 package com.amobee.sigma
 
+import org.gradle.internal.impldep.org.junit.Ignore
 import org.gradle.testfixtures.ProjectBuilder
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
@@ -29,7 +30,7 @@ class SigmaReleasePluginTest {
                         id 'java'
                     }
                     
-                    sigmaReleasePlugin{
+                    sigmaReleasePlugin {
                         deploymentTicket = "deploymentTicket"
                         bootstrapFilePath = "bootstrapFilePath"
                         tagName = "tagName"
@@ -52,6 +53,7 @@ class SigmaReleasePluginTest {
         Assertions.assertNotNull(project.tasks.getByName("postBuildRelease"))
     }
 
+    @Ignore
     @Test
     fun `When the build task is run then the 'preBuild' and 'postBuild' tasks must be run`() {
         val result = GradleRunner.create()
