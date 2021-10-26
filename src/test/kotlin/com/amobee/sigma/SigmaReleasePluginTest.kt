@@ -30,10 +30,15 @@ class SigmaReleasePluginTest {
                     }
                     
                     sigmaReleasePlugin{
-                        ticketNumber = "ticketNumber"
-                        version = "version"
+                        deploymentTicket = "deploymentTicket"
+                        bootstrapFilePath = "bootstrapFilePath"
+                        tagName = "tagName"
+                        releaseBranchName = "releaseBranchName"
+                        applicationMainBranch = "applicationMainBranch"
+                        preReleaseCommitMessage = "preReleaseCommitMessage"
+                        newVersionCommitMessage = "newVersionCommitMessage"
                     }
-                """
+                    """
             )
     }
 
