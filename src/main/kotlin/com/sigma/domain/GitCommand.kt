@@ -2,7 +2,6 @@ package com.sigma.domain
 
 import org.eclipse.jgit.api.Git
 
-
 fun checkout(git: Git,
              destination: String,
              createNewBranch: Boolean = false,
