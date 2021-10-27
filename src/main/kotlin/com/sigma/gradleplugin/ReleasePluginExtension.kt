@@ -6,10 +6,10 @@ import org.gradle.api.model.ObjectFactory
 abstract class ReleasePluginExtension(objectFactory: ObjectFactory, rootProject: Project) {
 
     val projectRepoPath = objectFactory.property(String::class.java)
-        .convention("${rootProject.path}")
+        .convention("${rootProject.path}/.git")
 
     val cloudConfigRepoPath = objectFactory.property(String::class.java)
-        .convention("${rootProject.path}/../config/")
+        .convention("${rootProject.path}/../config/.git")
 
     val deploymentTicket = objectFactory.property(String::class.java)
 
