@@ -6,10 +6,11 @@ import org.apache.commons.configuration.PropertiesConfiguration
 fun incrementAppVersion(
     gradlePropertiesFilePath: String,
     incrementStrategy: IncrementStrategy = MINOR
-) {
+): String {
     val version = getPropertyValue(gradlePropertiesFilePath, "version")
     val incrementedVersion = incrementStrategy.increment(version)
     updatePropertyFile(gradlePropertiesFilePath, "version", incrementedVersion)
+    return incrementedVersion
 }
 
 private fun updatePropertyFile(filePath: String,

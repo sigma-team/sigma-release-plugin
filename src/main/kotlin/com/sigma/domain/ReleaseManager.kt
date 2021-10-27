@@ -48,9 +48,8 @@ private fun createTagInCloudConfigRepo(git: Git, cloudConfigMainBranch: String, 
 
 private fun updateProjectVersion(git: Git, projectRepoPath: String, gradlePropertiesFilePath: String, applicationMainBranch: String, newVersionCommitMessage: String) {
     checkout(git, applicationMainBranch)
-    incrementAppVersion(gradlePropertiesFilePath)
+    val newVersion = incrementAppVersion(gradlePropertiesFilePath)
     add(git, Paths.get(projectRepoPath).parent.relativize(Paths.get(gradlePropertiesFilePath)).toString())
-    commit(git, newVersionCommitMessage)
+    commit(git, newVersionCommitMessage.replace("{newValue}", newVersion))
     push(git, applicationMainBranch)
 }
-

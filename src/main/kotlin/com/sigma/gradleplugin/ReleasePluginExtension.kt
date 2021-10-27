@@ -32,8 +32,8 @@ abstract class ReleasePluginExtension(objectFactory: ObjectFactory, project: Pro
         .convention("master")
 
     val preReleaseCommitMessage = objectFactory.property(String::class.java)
-        .convention("$deploymentTicket: [Release process] Pre release commit, version: '${project.version}'")
+        .convention("${deploymentTicket.get()}: [Release process] Pre release commit, version: '${project.version}'")
 
     val newVersionCommitMessage = objectFactory.property(String::class.java)
-        .convention("$deploymentTicket: [Release process] Changed version number to '${project.version}'")
+        .convention("${deploymentTicket.get()}: [Release process] Changed version number to '{newVersion}'")
 }
