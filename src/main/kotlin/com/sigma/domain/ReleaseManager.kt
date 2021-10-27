@@ -7,8 +7,8 @@ import java.io.File
 fun preBuild(projectRepoPath: String, releaseBranchName: String, bootstrapFile: String, tagName: String, preReleaseCommitMessage: String) {
     val git = createGit(projectRepoPath)
 
-    addSpringCloudConfigLabel(bootstrapFile = bootstrapFile, tagName)
     checkout(git, releaseBranchName, createNewBranch = true)
+    addSpringCloudConfigLabel(bootstrapFile = bootstrapFile, tagName)
     commit(git, preReleaseCommitMessage)
     push(git, releaseBranchName)
 }
