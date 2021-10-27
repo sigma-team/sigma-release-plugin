@@ -31,6 +31,7 @@ class SigmaReleasePlugin : Plugin<Project> {
         group = tasksGroup
         description = "TODO"
 
+        deploymentTicket.set(extension.deploymentTicket)
         projectRepoPath.set(extension.projectRepoPath)
         releaseBranchName.set(extension.releaseBranchName)
         bootstrapFilePath.set(extension.bootstrapFilePath)
@@ -45,6 +46,7 @@ class SigmaReleasePlugin : Plugin<Project> {
         group = tasksGroup
         description = "TODO"
 
+        deploymentTicket.set(extension.deploymentTicket)
         projectRepoPath.set(extension.projectRepoPath)
         cloudConfigRepoPath.set(extension.cloudConfigRepoPath)
         applicationMainBranch.set(extension.applicationMainBranch)
