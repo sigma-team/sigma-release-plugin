@@ -14,10 +14,10 @@ abstract class ReleasePluginExtension(objectFactory: ObjectFactory, project: Pro
         .convention("${project.rootDir.absolutePath}/../config/.git")
 
     val bootstrapFilePath = objectFactory.property(String::class.java)
-        .convention("${project.rootDir.absolutePath}/src/main/resources/bootstrap.yml")
+        .convention("${project.projectDir.absolutePath}/src/main/resources/bootstrap.yml")
 
     val gradlePropertiesFilePath = objectFactory.property(String::class.java)
-        .convention("${project.rootDir.absolutePath}/gradle.properties")
+        .convention("${project.projectDir.absolutePath}/gradle.properties")
 
     val tagName = objectFactory.property(String::class.java)
         .convention("${project.name}-${project.version}")
