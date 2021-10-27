@@ -13,18 +13,21 @@ fun preBuild(projectRepoPath: String, releaseBranchName: String, bootstrapFile: 
     push(git, releaseBranchName)
 }
 
-fun postBuild(projectRepoPath: String,
-              cloudConfigRepoPath: String,
-              applicationMainBranch: String,
-              cloudConfigMainBranch: String,
-              tagName: String,
-              preReleaseCommitMessage: String,
-              newVersionCommitMessage: String) {
+fun postBuild(
+    projectRepoPath: String,
+    cloudConfigRepoPath: String,
+    gradlePropertiesFilePath: String,
+    applicationMainBranch: String,
+    cloudConfigMainBranch: String,
+    tagName: String,
+    preReleaseCommitMessage: String,
+    newVersionCommitMessage: String
+) {
     val projectGit = createGit(projectRepoPath)
     val cloudConfigGit = createGit(cloudConfigRepoPath)
 
     createTagInCloudConfigRepo(cloudConfigGit, cloudConfigMainBranch, tagName, preReleaseCommitMessage)
-    updateProjectVersion(projectGit, applicationMainBranch, newVersionCommitMessage)
+    updateProjectVersion(projectGit, gradlePropertiesFilePath, applicationMainBranch, newVersionCommitMessage)
 }
 
 private fun createGit(repoPath: String) = Git(
@@ -41,10 +44,10 @@ private fun createTagInCloudConfigRepo(git: Git, cloudConfigMainBranch:String, t
     push(git, tagName)
 }
 
-private fun updateProjectVersion(git: Git, applicationMainBranch: String, newVersionCommitMessage: String) {
+private fun updateProjectVersion(git: Git, gradlePropertiesFilePath: String, applicationMainBranch: String, newVersionCommitMessage: String) {
     checkout(git, applicationMainBranch)
-    incrementAppVersion()
-    add(git, GRADLE_PROPERTIES_FILE)
+    incrementAppVersion(gradlePropertiesFilePath)
+    add(git, gradlePropertiesFilePath)
     commit(git, newVersionCommitMessage)
     push(git, applicationMainBranch)
 }

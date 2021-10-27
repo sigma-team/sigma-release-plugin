@@ -48,6 +48,7 @@ class SigmaReleasePlugin : Plugin<Project> {
         projectRepoPath.set(extension.projectRepoPath)
         cloudConfigRepoPath.set(extension.cloudConfigRepoPath)
         applicationMainBranch.set(extension.applicationMainBranch)
+        gradlePropertiesFilePath.set(extension.gradlePropertiesFilePath)
         cloudConfigMainBranch.set(extension.cloudConfigMainBranch)
         tagName.set(extension.tagName)
         preReleaseCommitMessage.set(extension.preReleaseCommitMessage)

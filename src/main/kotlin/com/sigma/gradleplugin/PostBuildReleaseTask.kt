@@ -21,6 +21,9 @@ open class PostBuildReleaseTask @Inject constructor(
     val applicationMainBranch = objectFactory.property(String::class.java)
 
     @get:Input
+    val gradlePropertiesFilePath = objectFactory.property(String::class.java)
+
+    @get:Input
     val cloudConfigMainBranch = objectFactory.property(String::class.java)
 
     @get:Input
@@ -39,6 +42,7 @@ open class PostBuildReleaseTask @Inject constructor(
         postBuild(
             projectRepoPath = projectRepoPath.get(),
             cloudConfigRepoPath = cloudConfigRepoPath.get(),
+            gradlePropertiesFilePath = gradlePropertiesFilePath.get(),
             applicationMainBranch = applicationMainBranch.get(),
             cloudConfigMainBranch = cloudConfigMainBranch.get(),
             tagName = tagName.get(),

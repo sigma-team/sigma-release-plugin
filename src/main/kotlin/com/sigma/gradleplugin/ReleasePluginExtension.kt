@@ -14,7 +14,10 @@ abstract class ReleasePluginExtension(objectFactory: ObjectFactory, rootProject:
     val deploymentTicket = objectFactory.property(String::class.java)
 
     val bootstrapFilePath = objectFactory.property(String::class.java)
-        .convention("${rootProject.path}/src/main/resources")
+        .convention("${rootProject.path}/src/main/resources/bootstrap.yml")
+
+    val gradlePropertiesFilePath = objectFactory.property(String::class.java)
+        .convention("${rootProject.path}/gradle.properties")
 
     val tagName = objectFactory.property(String::class.java)
         .convention("${rootProject.name}-${rootProject.version}")

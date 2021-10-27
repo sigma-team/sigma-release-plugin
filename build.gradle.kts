@@ -29,8 +29,8 @@ gradlePlugin {
  * metadata files.
  */
 val shadowImplementation by configurations.creating
-configurations["compileOnly"].extendsFrom(shadowImplementation)
-configurations["testImplementation"].extendsFrom(shadowImplementation)
+configurations.implementation.get().extendsFrom(shadowImplementation)
+configurations.testImplementation.get().extendsFrom(shadowImplementation)
 
 dependencies {
     shadowImplementation("commons-configuration:commons-configuration:1.10")
