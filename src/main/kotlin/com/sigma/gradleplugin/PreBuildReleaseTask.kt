@@ -12,9 +12,6 @@ open class PreBuildReleaseTask @Inject constructor(
 ) : DefaultTask() {
 
     @get:Input
-    val deploymentTicket = objectFactory.property(String::class.java)
-
-    @get:Input
     val projectRepoPath = objectFactory.property(String::class.java)
 
     @get:Input
@@ -34,7 +31,6 @@ open class PreBuildReleaseTask @Inject constructor(
         logger.quiet("run sigma release plugin `preBuild` step")
 
         preBuild(
-            deploymentTicket = deploymentTicket.get(),
             projectRepoPath = projectRepoPath.get(),
             releaseBranchName = releaseBranchName.get(),
             bootstrapFile = bootstrapFilePath.get(),

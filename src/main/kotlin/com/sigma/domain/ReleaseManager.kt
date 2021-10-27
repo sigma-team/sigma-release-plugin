@@ -5,20 +5,17 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import java.io.File
 import java.nio.file.Paths
 
-const val DEPLOYMENT_TICKET_PLACEHOLDER = "{deploymentTicket}"
-
-fun preBuild(deploymentTicket: String, projectRepoPath: String, releaseBranchName: String, bootstrapFile: String, tagName: String, preReleaseCommitMessage: String) {
+fun preBuild(projectRepoPath: String, releaseBranchName: String, bootstrapFile: String, tagName: String, preReleaseCommitMessage: String) {
     val git = createGit(projectRepoPath)
 
     checkout(git, releaseBranchName, createNewBranch = true)
     addSpringCloudConfigLabel(bootstrapFile = bootstrapFile, tagName)
     add(git, Paths.get(projectRepoPath).parent.relativize(Paths.get(bootstrapFile)).toString())
-    commit(git, preReleaseCommitMessage.replace(DEPLOYMENT_TICKET_PLACEHOLDER, deploymentTicket))
+    commit(git, preReleaseCommitMessage)
     push(git, releaseBranchName)
 }
 
 fun postBuild(
-    deploymentTicket: String,
     projectRepoPath: String,
     cloudConfigRepoPath: String,
     gradlePropertiesFilePath: String,
@@ -31,8 +28,8 @@ fun postBuild(
     val projectGit = createGit(projectRepoPath)
     val cloudConfigGit = createGit(cloudConfigRepoPath)
 
-    createTagInCloudConfigRepo(cloudConfigGit, cloudConfigMainBranch, tagName, preReleaseCommitMessage.replace(DEPLOYMENT_TICKET_PLACEHOLDER, deploymentTicket))
-    updateProjectVersion(projectGit, projectRepoPath, gradlePropertiesFilePath, applicationMainBranch, newVersionCommitMessage.replace(DEPLOYMENT_TICKET_PLACEHOLDER, deploymentTicket))
+    createTagInCloudConfigRepo(cloudConfigGit, cloudConfigMainBranch, tagName, preReleaseCommitMessage)
+    updateProjectVersion(projectGit, projectRepoPath, gradlePropertiesFilePath, applicationMainBranch, newVersionCommitMessage)
 }
 
 private fun createGit(repoPath: String) = Git(
@@ -53,6 +50,6 @@ private fun updateProjectVersion(git: Git, projectRepoPath: String, gradleProper
     checkout(git, applicationMainBranch)
     val newVersion = incrementAppVersion(gradlePropertiesFilePath)
     add(git, Paths.get(projectRepoPath).parent.relativize(Paths.get(gradlePropertiesFilePath)).toString())
-    commit(git, newVersionCommitMessage.replace("{newValue}", newVersion))
+    commit(git, newVersionCommitMessage.replace("{newVersion}", newVersion))
     push(git, applicationMainBranch)
 }

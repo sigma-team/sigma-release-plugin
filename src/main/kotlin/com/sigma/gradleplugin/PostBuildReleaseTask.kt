@@ -12,9 +12,6 @@ open class PostBuildReleaseTask @Inject constructor(
 ) : DefaultTask() {
 
     @get:Input
-    val deploymentTicket = objectFactory.property(String::class.java)
-
-    @get:Input
     val projectRepoPath = objectFactory.property(String::class.java)
 
     @get:Input
@@ -43,7 +40,6 @@ open class PostBuildReleaseTask @Inject constructor(
         logger.quiet("run sigma release plugin `postBuild` step")
 
         postBuild(
-            deploymentTicket = deploymentTicket.get(),
             projectRepoPath = projectRepoPath.get(),
             cloudConfigRepoPath = cloudConfigRepoPath.get(),
             gradlePropertiesFilePath = gradlePropertiesFilePath.get(),
