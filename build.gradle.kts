@@ -33,11 +33,13 @@ configurations["compileOnly"].extendsFrom(shadowImplementation)
 configurations["testImplementation"].extendsFrom(shadowImplementation)
 
 dependencies {
-    implementation("commons-configuration:commons-configuration:1.10")
-    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
+    shadowImplementation("commons-configuration:commons-configuration:1.10")
     shadowImplementation("org.eclipse.jgit:org.eclipse.jgit:5.13.0.202109080827-r")
     shadowImplementation("org.eclipse.jgit:org.eclipse.jgit.ssh.jsch:5.13.0.202109080827-r")
     shadowImplementation("org.eclipse.jgit:org.eclipse.jgit.ssh.apache:5.13.0.202109080827-r")
+
+    implementation("org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31")
+
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.8.1")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.8.1")
 }
