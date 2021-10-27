@@ -5,17 +5,20 @@ import org.eclipse.jgit.storage.file.FileRepositoryBuilder
 import java.io.File
 import java.nio.file.Paths
 
-fun preBuild(projectRepoPath: String, releaseBranchName: String, bootstrapFile: String, tagName: String, preReleaseCommitMessage: String) {
+const val DEPLOYMENT_TICKET_PLACEHOLDER = "{deploymentTicket}"
+
+fun preBuild(deploymentTicket: String, projectRepoPath: String, releaseBranchName: String, bootstrapFile: String, tagName: String, preReleaseCommitMessage: String) {
     val git = createGit(projectRepoPath)
 
     checkout(git, releaseBranchName, createNewBranch = true)
     addSpringCloudConfigLabel(bootstrapFile = bootstrapFile, tagName)
     add(git, Paths.get(projectRepoPath).parent.relativize(Paths.get(bootstrapFile)).toString())
-    commit(git, preReleaseCommitMessage)
+    commit(git, preReleaseCommitMessage.replace(DEPLOYMENT_TICKET_PLACEHOLDER, deploymentTicket))
     push(git, releaseBranchName)
 }
 
 fun postBuild(
+    deploymentTicket: String,
     projectRepoPath: String,
     cloudConfigRepoPath: String,
     gradlePropertiesFilePath: String,
@@ -28,8 +31,8 @@ fun postBuild(
     val projectGit = createGit(projectRepoPath)
     val cloudConfigGit = createGit(cloudConfigRepoPath)
 
-    createTagInCloudConfigRepo(cloudConfigGit, cloudConfigMainBranch, tagName, preReleaseCommitMessage)
-    updateProjectVersion(projectGit, projectRepoPath, gradlePropertiesFilePath, applicationMainBranch, newVersionCommitMessage)
+    createTagInCloudConfigRepo(cloudConfigGit, cloudConfigMainBranch, tagName, preReleaseCommitMessage.replace(DEPLOYMENT_TICKET_PLACEHOLDER, deploymentTicket))
+    updateProjectVersion(projectGit, projectRepoPath, gradlePropertiesFilePath, applicationMainBranch, newVersionCommitMessage.replace(DEPLOYMENT_TICKET_PLACEHOLDER, deploymentTicket))
 }
 
 private fun createGit(repoPath: String) = Git(
