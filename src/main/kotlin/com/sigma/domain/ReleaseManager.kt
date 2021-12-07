@@ -1,20 +1,34 @@
 package com.sigma.domain
 
 import org.eclipse.jgit.api.Git
-import org.eclipse.jgit.storage.file.FileRepositoryBuilder
-import java.io.File
 import java.nio.file.Paths
 
 const val DEPLOYMENT_TICKET_PLACEHOLDER = "{deploymentTicket}"
+const val CURRENT_VERSION_PLACEHOLDER = "{currentVersion}"
+const val NEW_VERSION_PLACEHOLDER = "{newVersion}"
 
-fun preBuild(deploymentTicket: String, projectRepoPath: String, releaseBranchName: String, bootstrapFile: String, tagName: String, preReleaseCommitMessage: String) {
+fun preBuild(
+    deploymentTicket: String,
+    projectRepoPath: String,
+    gradlePropertiesFilePath: String,
+    releaseBranchName: String,
+    bootstrapFile: String,
+    tagName: String,
+    preReleaseCommitMessage: String
+) {
+    val releaseBranchNameWithoutSuffix = releaseBranchName.removeSuffix("-SNAPSHOT")
     val git = createGit(projectRepoPath)
-
-    checkout(git, releaseBranchName, createNewBranch = true)
-    addSpringCloudConfigLabel(bootstrapFile = bootstrapFile, tagName)
-    add(git, Paths.get(projectRepoPath).parent.relativize(Paths.get(bootstrapFile)).toString())
-    commit(git, preReleaseCommitMessage.replace(DEPLOYMENT_TICKET_PLACEHOLDER, deploymentTicket))
-    push(git, releaseBranchName)
+    val currentVersion = getCurrentVersion(gradlePropertiesFilePath).removeSuffix("-SNAPSHOT")
+    checkout(git, releaseBranchNameWithoutSuffix, createNewBranch = true)
+    addSpringCloudConfigLabel(bootstrapFile = bootstrapFile, tagName.replace(CURRENT_VERSION_PLACEHOLDER, currentVersion))
+    add(git, Paths.get(projectRepoPath).toRealPath().relativize(Paths.get(bootstrapFile).toRealPath()).toString())
+    commit(
+        git,
+        preReleaseCommitMessage
+            .replace(DEPLOYMENT_TICKET_PLACEHOLDER, deploymentTicket)
+            .replace(CURRENT_VERSION_PLACEHOLDER, currentVersion)
+    )
+    push(git, releaseBranchNameWithoutSuffix)
 }
 
 fun postBuild(
@@ -31,17 +45,29 @@ fun postBuild(
     val projectGit = createGit(projectRepoPath)
     val cloudConfigGit = createGit(cloudConfigRepoPath)
 
-    createTagInCloudConfigRepo(cloudConfigGit, cloudConfigMainBranch, tagName, preReleaseCommitMessage.replace(DEPLOYMENT_TICKET_PLACEHOLDER, deploymentTicket))
-    updateProjectVersion(projectGit, projectRepoPath, gradlePropertiesFilePath, applicationMainBranch, newVersionCommitMessage.replace(DEPLOYMENT_TICKET_PLACEHOLDER, deploymentTicket))
-}
+    checkout(projectGit, applicationMainBranch)
 
-private fun createGit(repoPath: String) = Git(
-    FileRepositoryBuilder()
-        .setGitDir(File(repoPath))
-        .readEnvironment() // scan environment GIT_* variables
-        .findGitDir() // scan up the file system tree
-        .build()
-)
+    val currentVersion = getCurrentVersion(gradlePropertiesFilePath).removeSuffix("-SNAPSHOT")
+    val newVersion = incrementAppVersion(gradlePropertiesFilePath)
+
+    createTagInCloudConfigRepo(
+        git = cloudConfigGit,
+        cloudConfigMainBranch = cloudConfigMainBranch,
+        tagName = tagName.replace(CURRENT_VERSION_PLACEHOLDER, currentVersion),
+        preReleaseCommitMessage = preReleaseCommitMessage
+            .replace(DEPLOYMENT_TICKET_PLACEHOLDER, deploymentTicket)
+            .replace(CURRENT_VERSION_PLACEHOLDER, currentVersion)
+    )
+    pushNewProjectVersion(
+        git = projectGit,
+        projectRepoPath = projectRepoPath,
+        gradlePropertiesFilePath = gradlePropertiesFilePath,
+        applicationMainBranch = applicationMainBranch,
+        newVersionCommitMessage = newVersionCommitMessage
+            .replace(DEPLOYMENT_TICKET_PLACEHOLDER, deploymentTicket)
+            .replace(NEW_VERSION_PLACEHOLDER, newVersion)
+    )
+}
 
 private fun createTagInCloudConfigRepo(git: Git, cloudConfigMainBranch: String, tagName: String, preReleaseCommitMessage: String) {
     checkout(git, cloudConfigMainBranch)
@@ -49,10 +75,14 @@ private fun createTagInCloudConfigRepo(git: Git, cloudConfigMainBranch: String, 
     push(git, tagName)
 }
 
-private fun updateProjectVersion(git: Git, projectRepoPath: String, gradlePropertiesFilePath: String, applicationMainBranch: String, newVersionCommitMessage: String) {
-    checkout(git, applicationMainBranch)
-    val newVersion = incrementAppVersion(gradlePropertiesFilePath)
-    add(git, Paths.get(projectRepoPath).parent.relativize(Paths.get(gradlePropertiesFilePath)).toString())
-    commit(git, newVersionCommitMessage.replace("{newVersion}", newVersion))
+private fun pushNewProjectVersion(
+    git: Git,
+    projectRepoPath: String,
+    gradlePropertiesFilePath: String,
+    applicationMainBranch: String,
+    newVersionCommitMessage: String,
+) {
+    add(git, Paths.get(projectRepoPath).toRealPath().relativize(Paths.get(gradlePropertiesFilePath).toRealPath()).toString())//TODO
+    commit(git, newVersionCommitMessage)
     push(git, applicationMainBranch)
 }

@@ -7,22 +7,26 @@ fun incrementAppVersion(
     gradlePropertiesFilePath: String,
     incrementStrategy: IncrementStrategy = MINOR
 ): String {
-    val version = getPropertyValue(gradlePropertiesFilePath, "version")
-    val incrementedVersion = incrementStrategy.increment(version)
+    val currentVersion = getCurrentVersion(gradlePropertiesFilePath)
+    val incrementedVersion = incrementStrategy.increment(currentVersion)
     updatePropertyFile(gradlePropertiesFilePath, "version", incrementedVersion)
     return incrementedVersion
 }
 
-private fun updatePropertyFile(filePath: String,
-                               propertyKey: String,
-                               propertyValue: String
+fun getCurrentVersion(gradlePropertiesFilePath: String) = getPropertyValue(gradlePropertiesFilePath, "version")
+
+private fun updatePropertyFile(
+    filePath: String,
+    propertyKey: String,
+    propertyValue: String
 ) = with(PropertiesConfiguration(filePath)) {
     setProperty(propertyKey, propertyValue)
     save()
 }
 
-private fun getPropertyValue(filePath: String,
-                             propertyKey: String
+private fun getPropertyValue(
+    filePath: String,
+    propertyKey: String
 ) = PropertiesConfiguration(filePath).getString(propertyKey)!!
 
 enum class IncrementStrategy(private val versionIndex: Int) {

@@ -18,6 +18,9 @@ open class PreBuildReleaseTask @Inject constructor(
     val projectRepoPath = objectFactory.property(String::class.java)
 
     @get:Input
+    val gradlePropertiesFilePath = objectFactory.property(String::class.java)
+
+    @get:Input
     val releaseBranchName = objectFactory.property(String::class.java)
 
     @get:Input
@@ -36,6 +39,7 @@ open class PreBuildReleaseTask @Inject constructor(
         preBuild(
             deploymentTicket = deploymentTicket.get(),
             projectRepoPath = projectRepoPath.get(),
+            gradlePropertiesFilePath = gradlePropertiesFilePath.get(),
             releaseBranchName = releaseBranchName.get(),
             bootstrapFile = bootstrapFilePath.get(),
             tagName = tagName.get(),

@@ -20,7 +20,7 @@ abstract class ReleasePluginExtension(objectFactory: ObjectFactory, project: Pro
         .convention("${project.projectDir.absolutePath}/gradle.properties")
 
     val tagName = objectFactory.property(String::class.java)
-        .convention("${project.name}-${project.version}")
+        .convention("${project.name}-{currentVersion}")
 
     val releaseBranchName = objectFactory.property(String::class.java)
         .convention("release-${project.version}")
@@ -32,7 +32,7 @@ abstract class ReleasePluginExtension(objectFactory: ObjectFactory, project: Pro
         .convention("master")
 
     val preReleaseCommitMessage = objectFactory.property(String::class.java)
-        .convention("{deploymentTicket}: [Release process] Pre release commit, version: '${project.version}'")
+        .convention("{deploymentTicket}: [Release process] Pre release commit, version: '{currentVersion}'")
 
     val newVersionCommitMessage = objectFactory.property(String::class.java)
         .convention("{deploymentTicket}: [Release process] Changed version number to '{newVersion}'")
