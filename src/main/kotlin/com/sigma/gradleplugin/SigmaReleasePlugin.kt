@@ -33,6 +33,7 @@ class SigmaReleasePlugin : Plugin<Project> {
 
         deploymentTicket.set(extension.deploymentTicket)
         projectRepoPath.set(extension.projectRepoPath)
+        gradlePropertiesFilePath.set(extension.gradlePropertiesFilePath)
         releaseBranchName.set(extension.releaseBranchName)
         bootstrapFilePath.set(extension.bootstrapFilePath)
         tagName.set(extension.tagName)
